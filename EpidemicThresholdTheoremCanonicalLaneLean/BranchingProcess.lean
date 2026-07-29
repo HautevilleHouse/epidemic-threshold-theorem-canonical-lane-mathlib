@@ -5,24 +5,24 @@ namespace EpidemicThresholdTheoremCanonicalLaneLean
 
 structure BranchingProcess where
   offspringDistribution : ℕ → ℝ
-  extinctionProbability : ℝ
   meanOffspring : ℝ
-  extinctionEqSolves : extinctionProbability = (∑ n, offspringDistribution n * extinctionProbability ^ n)
-  meanOffspringDefined : meanOffspring = (∑ n, n * offspringDistribution n)
-  offspringSumOne : (∑ n, offspringDistribution n) = 1
+  extinctionProbability : ℝ
+  distributionNormalized : ∑' (k : ℕ), offspringDistribution k = 1
+  meanOffspringComputed : meanOffspring = ∑' (k : ℕ), k * offspringDistribution k
+  extinctionProbEquation : extinctionProbability = ∑' (k : ℕ), offspringDistribution k * extinctionProbability ^ (k : ℕ)
 
 structure BranchingProcessEvidence (B : BranchingProcess) where
-  extinctionEqSolvesClosed : B.extinctionProbability = (∑ n, B.offspringDistribution n * B.extinctionProbability ^ n)
-  meanOffspringDefinedClosed : B.meanOffspring = (∑ n, (n : ℝ) * B.offspringDistribution n)
-  offspringSumOneClosed : (∑ n, B.offspringDistribution n) = 1
+  distributionNormalizedClosed : B.distributionNormalized
+  meanOffspringComputedClosed : B.meanOffspringComputed
+  extinctionProbEquationClosed : B.extinctionProbEquation
 
 def BranchingProcessClosed (B : BranchingProcess) : Prop :=
-  B.extinctionProbability = (∑ n, B.offspringDistribution n * B.extinctionProbability ^ n) ∧
-  B.meanOffspring = (∑ n, (n : ℝ) * B.offspringDistribution n) ∧
-  (∑ n, B.offspringDistribution n) = 1
+  B.distributionNormalized ∧ B.meanOffspringComputed ∧ B.extinctionProbEquation
 
-theorem branching_process_closed_from_evidence (B : BranchingProcess) (E : BranchingProcessEvidence B) : BranchingProcessClosed B := by
-  exact And.intro E.extinctionEqSolvesClosed (And.intro E.meanOffspringDefinedClosed E.offspringSumOneClosed)
+theorem branching_process_closed_from_evidence (B : BranchingProcess)
+    (E : BranchingProcessEvidence B) : BranchingProcessClosed B := by
+  exact And.intro E.distributionNormalizedClosed
+    (And.intro E.meanOffspringComputedClosed E.extinctionProbEquationClosed)
 
-end EpidemicThresholdTheoremCanonicalLaneLean
+end HautevilleHouse.EpidemicThresholdTheoremCanonicalLaneLean
 end HautevilleHouse
