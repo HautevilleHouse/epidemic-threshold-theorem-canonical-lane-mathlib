@@ -1,23 +1,14 @@
-import CanonicalLaneMathlibCore
+import HautevilleHouse.EpidemicThresholdTheoremCanonicalLaneLean.BridgeLemmas
 
 namespace HautevilleHouse
 namespace EpidemicThresholdTheoremCanonicalLaneLean
 
-structure AdmissibleClass where
-  bridgeData : Prop
-  gateData : Prop
+def gateClosed (A : AdmissibleClass) : Prop :=
+  A.endpointSatisfied ∨ A.remainderRecorded
 
-def defaultAdmissibleClass (_ : Unit) : AdmissibleClass :=
-  { bridgeData := True, gateData := True }
-
-def bridgeClosed (A : AdmissibleClass) : Prop := A.bridgeData
-def gateClosed (A : AdmissibleClass) : Prop := A.gateData
-
-theorem bridge_from_admissible_class (A : AdmissibleClass) : bridgeClosed A := by
-  rcases A with ⟨hb, hg⟩; exact hb
-
-theorem gate_from_admissible_class (A : AdmissibleClass) : gateClosed A := by
-  rcases A with ⟨hb, hg⟩; exact hg
+theorem gate_from_admissible_class (A : AdmissibleClass) :
+    gateClosed A := by
+  exact A.gateWitness
 
 end EpidemicThresholdTheoremCanonicalLaneLean
 end HautevilleHouse
