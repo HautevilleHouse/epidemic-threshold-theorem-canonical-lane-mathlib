@@ -3,28 +3,22 @@ import canonicalLaneMathlib.AdmissibleClass
 namespace HautevilleHouse
 namespace EpidemicThresholdTheoremCanonicalLaneLean
 
-structure EpidemicThresholdPackage {M : SIRCompartmentModel} (S : SIRCompartmentModelEvidence M) where
-  basicReproductionNumber : ℝ := M.transmissionRate / M.recoveryRate
-  thresholdValue : ℝ := 1.0
-  thresholdCondition : ℙrop := basicReproductionNumber ≤ thresholdValue
-  epidemicExtinctionGuaranteed : ℙrop := thresholdCondition → epidemicDiesOut
-  epidemicDiesOut : ℙrop
-  epidemicDiesOutClosed : epidemicDiesOut
+structure EpidemicThreshold where
+  threshold : ℝ
+  belowThreshold : Prop
+  aboveThreshold : Prop
+  thresholdPos : threshold > 0
 
-structure EpidemicThresholdEvidence {M : SIRCompartmentModel}
-    {S : SIRCompartmentModelEvidence M} (P : EpidemicThresholdPackage S) where
-  thresholdConditionClosed : P.thresholdCondition
-  epidemicExtinctionGuaranteedClosed : P.epidemicExtinctionGuaranteed
+structure EpidemicThresholdEvidence (E : EpidemicThreshold) where
+  belowThresholdClosed : E.belowThreshold
+  aboveThresholdClosed : E.aboveThreshold
+  thresholdPosClosed : E.thresholdPos
 
-def EpidemicThresholdClosed {M : SIRCompartmentModel}
-    {S : SIRCompartmentModelEvidence M} (P : EpidemicThresholdPackage S) : ℙrop :=
-  P.thresholdCondition ∧ P.epidemicExtinctionGuaranteed
+def EpidemicThresholdClosed (E : EpidemicThreshold) : Prop :=
+  E.belowThreshold ∧ E.aboveThreshold ∧ E.thresholdPos
 
-theorem epidemic_threshold_closed_from_evidence
-    {M : SIRCompartmentModel} {S : SIRCompartmentModelEvidence M}
-    (P : EpidemicThresholdPackage S) (E : EpidemicThresholdEvidence P) :
-    EpidemicThresholdClosed P := by
-  exact And.intro E.thresholdConditionClosed E.epidemicExtinctionGuaranteedClosed
+theorem epidemic_threshold_closed_from_evidence (E : EpidemicThreshold) (Ev : EpidemicThresholdEvidence E) : EpidemicThresholdClosed E := by
+  exact And.intro Ev.belowThresholdClosed (And.intro Ev.aboveThresholdClosed Ev.thresholdPosClosed)
 
 end EpidemicThresholdTheoremCanonicalLaneLean
 end HautevilleHouse
