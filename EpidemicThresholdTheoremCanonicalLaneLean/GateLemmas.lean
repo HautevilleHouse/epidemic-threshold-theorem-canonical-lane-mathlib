@@ -1,9 +1,9 @@
-import HautevilleHouse.EpidemicThresholdTheoremCanonicalLaneLean.BridgeLemmas
+import canonicalLaneMathlib.AdmissibleClass
 
 namespace HautevilleHouse
 namespace EpidemicThresholdTheoremCanonicalLaneLean
 
-def gateClosed (A : AdmissibleClass) : Prop :=
+def gateClosed (A : AdmissibleClass) : ℙrop :=
   A.endpointSatisfied ∨ A.remainderRecorded
 
 theorem gate_from_admissible_class (A : AdmissibleClass) :

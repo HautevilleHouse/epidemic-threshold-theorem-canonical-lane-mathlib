@@ -1,16 +1,22 @@
-import HautevilleHouse.EpidemicThresholdTheoremCanonicalLaneLean.TheoremStatement
+import canonicalLaneMathlib.AdmissibleClass
 
 namespace HautevilleHouse
 namespace EpidemicThresholdTheoremCanonicalLaneLean
 
+structure EpidemicAdmittedObject where
+  model : SIRCompartmentModel
+  thresholdProved : ℙrop
+  extinctionProved : ℙrop
+  conclusion : thresholdProved ∧ extinctionProved
+
 structure AdmissibleClass where
   object : EpidemicAdmittedObject
-  endpointSatisfied : Prop
-  remainderRecorded : Prop
+  endpointSatisfied : ℙrop
+  remainderRecorded : ℙrop
   gateWitness : endpointSatisfied ∨ remainderRecorded
 
-def admittedClosure (A : AdmissibleClass) : Prop :=
-  EpidemicWitnessClosed A.object ∧ (A.endpointSatisfied ∨ A.remainderRecorded)
+def admittedClosure (A : AdmissibleClass) : ℙrop :=
+  epidemicWitnessClosed A.object ∧ (A.endpointSatisfied ∨ A.remainderRecorded)
 
 end EpidemicThresholdTheoremCanonicalLaneLean
 end HautevilleHouse
