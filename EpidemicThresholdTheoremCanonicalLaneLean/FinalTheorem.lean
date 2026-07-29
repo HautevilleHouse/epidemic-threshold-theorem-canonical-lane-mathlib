@@ -1,13 +1,13 @@
-import EpidemicThresholdTheoremCanonicalLaneLean.GateLemmas
+import HautevilleHouse.EpidemicThresholdTheoremCanonicalLaneLean.GateLemmas
 
 namespace HautevilleHouse
 namespace EpidemicThresholdTheoremCanonicalLaneLean
 
-def ConstrainedTheoremClosure (A : AdmissibleClass) : Prop :=
+def ConstrainedEpidemicThresholdClosure (A : AdmissibleClass) : Prop :=
   bridgeClosed A ∧ gateClosed A
 
-theorem constrained_theorem_closure (A : AdmissibleClass) :
-    ConstrainedTheoremClosure A := by
+theorem constrained_epidemic_threshold_endgame (A : AdmissibleClass) :
+    ConstrainedEpidemicThresholdClosure A := by
   exact And.intro (bridge_from_admissible_class A) (gate_from_admissible_class A)
 
 end EpidemicThresholdTheoremCanonicalLaneLean
