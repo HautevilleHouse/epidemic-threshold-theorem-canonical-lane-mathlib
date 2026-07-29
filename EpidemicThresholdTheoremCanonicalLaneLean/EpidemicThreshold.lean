@@ -1,24 +1,23 @@
 import canonicalLaneMathlib.AdmissibleClass
+import HautevilleHouse.EpidemicThresholdTheoremCanonicalLaneLean.BasicReproductionNumber
 
 namespace HautevilleHouse
 namespace EpidemicThresholdTheoremCanonicalLaneLean
 
-structure EpidemicThreshold where
+structure EpidemicThresholdPackage {M : SIRCompartmentModel} (P : BasicReproductionNumberPackage M) where
   threshold : ℝ
-  belowThreshold : Prop
-  aboveThreshold : Prop
-  thresholdPos : threshold > 0
+  thresholdAboveOne : threshold > 1
+  r0AboveThresholdCondition : P.r0 > threshold → EpidemicOutbreak
 
-structure EpidemicThresholdEvidence (E : EpidemicThreshold) where
-  belowThresholdClosed : E.belowThreshold
-  aboveThresholdClosed : E.aboveThreshold
-  thresholdPosClosed : E.thresholdPos
+structure EpidemicThresholdEvidence {M : SIRCompartmentModel} {P : BasicReproductionNumberPackage M} (E : EpidemicThresholdPackage P) where
+  thresholdAboveOneClosed : E.thresholdAboveOne
+  r0AboveThresholdConditionClosed : E.r0AboveThresholdCondition
 
-def EpidemicThresholdClosed (E : EpidemicThreshold) : Prop :=
-  E.belowThreshold ∧ E.aboveThreshold ∧ E.thresholdPos
+def EpidemicThresholdClosed {M : SIRCompartmentModel} {P : BasicReproductionNumberPackage M} (E : EpidemicThresholdPackage P) : Prop :=
+  E.thresholdAboveOne ∧ E.r0AboveThresholdCondition
 
-theorem epidemic_threshold_closed_from_evidence (E : EpidemicThreshold) (Ev : EpidemicThresholdEvidence E) : EpidemicThresholdClosed E := by
-  exact And.intro Ev.belowThresholdClosed (And.intro Ev.aboveThresholdClosed Ev.thresholdPosClosed)
+theorem epidemic_threshold_closed_from_evidence {M : SIRCompartmentModel} {P : BasicReproductionNumberPackage M} (Epkg : EpidemicThresholdPackage P) (E : EpidemicThresholdEvidence Epkg) : EpidemicThresholdClosed Epkg := by
+  exact And.intro E.thresholdAboveOneClosed E.r0AboveThresholdConditionClosed
 
 end EpidemicThresholdTheoremCanonicalLaneLean
 end HautevilleHouse

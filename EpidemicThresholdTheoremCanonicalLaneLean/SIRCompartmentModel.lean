@@ -4,30 +4,26 @@ namespace HautevilleHouse
 namespace EpidemicThresholdTheoremCanonicalLaneLean
 
 structure SIRCompartmentModel where
-  susceptible : Type u
-  infected : Type v
-  recovered : Type w
+  susceptible : ℕ
+  infected : ℕ
+  recovered : ℕ
+  totalPopulation : ℕ
   transmissionRate : ℝ
   recoveryRate : ℝ
-  initialSusceptibleFraction : ℝ
-  initialInfectedFraction : ℝ
-  initialRecoveredFraction : ℝ
-  populationNormalized : Prop
-  transmissionRatePositive : transmissionRate > 0
-  recoveryRatePositive : recoveryRate > 0
 
 structure SIRCompartmentModelEvidence (M : SIRCompartmentModel) where
-  populationNormalizedClosed : M.populationNormalized
-  transmissionRatePositiveClosed : M.transmissionRatePositive
-  recoveryRatePositiveClosed : M.recoveryRatePositive
+  susceptibleNonnegative : M.susceptible ≥ 0
+  infectedNonnegative : M.infected ≥ 0
+  recoveredNonnegative : M.recovered ≥ 0
+  totalPopulationPositive : M.totalPopulation > 0
+  transmissionRatePositive : M.transmissionRate > 0
+  recoveryRatePositive : M.recoveryRate > 0
 
 def SIRCompartmentModelClosed (M : SIRCompartmentModel) : Prop :=
-  M.populationNormalized ∧ M.transmissionRatePositive ∧ M.recoveryRatePositive
+  M.susceptible ≥ 0 ∧ M.infected ≥ 0 ∧ M.recovered ≥ 0 ∧ M.totalPopulation > 0 ∧ M.transmissionRate > 0 ∧ M.recoveryRate > 0
 
-theorem sir_compartment_model_closed_from_evidence (M : SIRCompartmentModel)
-    (E : SIRCompartmentModelEvidence M) : SIRCompartmentModelClosed M := by
-  exact And.intro E.populationNormalizedClosed
-    (And.intro E.transmissionRatePositiveClosed E.recoveryRatePositiveClosed)
+theorem sir_compartment_model_closed_from_evidence (M : SIRCompartmentModel) (E : SIRCompartmentModelEvidence M) : SIRCompartmentModelClosed M := by
+  exact And.intro E.susceptibleNonnegative (And.intro E.infectedNonnegative (And.intro E.recoveredNonnegative (And.intro E.totalPopulationPositive (And.intro E.transmissionRatePositive E.recoveryRatePositive))))
 
 end EpidemicThresholdTheoremCanonicalLaneLean
 end HautevilleHouse

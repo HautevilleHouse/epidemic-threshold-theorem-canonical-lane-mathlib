@@ -1,4 +1,5 @@
-import canonicalLaneMathlib.AdmissibleClass
+import HautevilleHouse.EpidemicThresholdTheoremCanonicalLaneLean.BridgeLemmas
+import HautevilleHouse.EpidemicThresholdTheoremCanonicalLaneLean.GateLemmas
 
 namespace HautevilleHouse
 namespace EpidemicThresholdTheoremCanonicalLaneLean
